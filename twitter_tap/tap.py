@@ -255,7 +255,7 @@ def main():
         logger.info("Collecting tweets from the search API...")
 
         while True:
-            results = perform_query(q=query,geocode=geocode,lang=lang,count=1000,since_id=since_id,result_type=result_type)
+            results = perform_query(q=query,geocode=geocode,lang=lang,count=100,since_id=since_id,result_type=result_type)
 
             refresh_url = results['search_metadata'].get('refresh_url')
             p = urlparse.urlparse(refresh_url)
@@ -272,7 +272,7 @@ def main():
             while next_results:
                 p = urlparse.urlparse(next_results)
                 next_results_max_id = dict(urlparse.parse_qsl(p.query))['max_id']
-                results = perform_query(q=query,geocode=geocode,lang=lang,count=1000,since_id=since_id,max_id=next_results_max_id,result_type=result_type)
+                results = perform_query(q=query,geocode=geocode,lang=lang,count=100,since_id=since_id,max_id=next_results_max_id,result_type=result_type)
                 next_results = results['search_metadata'].get('next_results')
                 logger.debug("Rate limit for current window: "+str(twitter.get_lastfunction_header(header="x-rate-limit-remaining")))
                 new_since_id = save_tweets(results['statuses'],new_since_id)
